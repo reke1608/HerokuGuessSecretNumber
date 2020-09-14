@@ -9,19 +9,19 @@ def index():
 
     response = make_response(render_template("index.html"))
     if not secret_number:
-        new_secret = random.randint(1, 30)
-        response.set_cookie("secret_number", str(new_secret))
+        secret = random.randint(1, 30)
+        response.set_cookie("secret_number", str(secret))
 
     return response
 
 
-@app.route("/result", methods=["POST"])
-def result():
+@app.route("/success", methods=["POST"])
+def success():
     guess = int(request.form.get("guess"))
     secret_number = int(request.cookies.get("secret_number"))
 
     if guess == secret_number:
-        message = "Correct! The secret number is {0}".format(str(secret_number))
+        message = "Correct! The secret number is " + str(secret_number)
         response = make_response(render_template("success.html", message=message))
         response.set_cookie("secret_number", str(random.randint(1, 30)))
         return response
@@ -32,6 +32,9 @@ def result():
         message = "Your guess is not correct...try something bigger."
         return render_template("success.html", message=message)
 
+    return render_template (success.html)
+
 
 if __name__ == '__main__':
     app.run()
+
